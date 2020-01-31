@@ -41,7 +41,7 @@ def google_sign(text, tkk='436443.3778881810'):
     # Convert text to ints
     for i in text:
         val = ord(i)
-        if val < 0x10000:
+        if val < 0x10000:  # 65536 test with chr
             a += [val]
         else:
             # Python doesn't natively use Unicode surrogates, so account for those
@@ -61,10 +61,10 @@ def google_sign(text, tkk='436443.3778881810'):
     while g < size:
         l = a[g]
         # just append if l is less than 128(ascii: DEL)
-        if l < 128:
+        if l < 128:  # äöü
             e.append(l)
         # append calculated value if l is less than 2048
-        else:  # pragma: no cover lets worry about this later
+        else:  # non-ascii
             if l < 2048:
                 e.append(l >> 6 | 192)
             else:

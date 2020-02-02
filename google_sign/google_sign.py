@@ -11,10 +11,35 @@ TOKENAC = TokenAcquirer()
 
 def google_sign(text):
     return TOKENAC.do(text)
+
+def get_tkk():
+    global tkk
+    if not tkk:
+        res = requests.get('https://translate.google.cn/', proxies=proxy).text
+        tkk = re.search(r"tkk:'(\d+\.\d+)", res).group(1)
+    return tkk
+---
+httpx
+def get_tkk(proxies=None):
+    """ get_tkk """
+    with httpx.Client(proxies=proxies) as client:
+        try:
+            # res = requests.get('https://translate.google.cn/', proxies=proxy).text
+            res = client.get('https://translate.google.cn/').text
+            tkk = re.search(r"tkk:'(\d+\.\d+)", res).group(1)
+        except Exception as exc:
+            logger.error('Unable to fetch tkk, fall back to None')
+            tkk = None
+    return tkk
+
 '''
 import math
+import re
+import httpx
 
-# tkk = '436443.3778881810'
+from loguru import logger
+
+TKK = '436443.3778881810'
 
 
 def rshift(val, n):
@@ -36,7 +61,40 @@ def _xr(a, b):
     return a
 
 
-def google_sign(text, tkk='436443.3778881810'):
+def get_tkk(proxies=None):
+    """ get_tkk """
+    with httpx.Client(proxies=proxies) as client:
+        try:
+            # res = requests.get('https://translate.google.cn/', proxies=proxy).text
+            res = client.get('https://translate.google.cn/').text
+            tkk = re.search(r"tkk:'(\d+\.\d+)", res).group(1)
+        except Exception as exc:  # pragma: nocover
+            logger.error('Unable to fetch tkk, fall back to None')
+            tkk = None
+    return tkk
+
+
+def google_sign(text, tkk=None):
+    '''
+    google_sign
+
+    set tkk to a value to aoid fetching tkk for reach requests
+    e.g.,
+    tkk = get_tkk()
+    google_sign(text1, tkk=tkk)
+    google_sign(text2, tkk=tkk)
+
+    '436443.3778881810'
+    '''
+    if tkk is None:
+        try:
+            tkk = get_tkk()
+        except Exception as exc:  # pragma: nocover
+            logger.error('Unable to fetch tkk, set to None')
+            tkk = None
+    if tkk is None:  # pragma: nocover
+        tkk = TKK
+
     a = []
     # Convert text to ints
     for i in text:

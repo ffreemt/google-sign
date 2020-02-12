@@ -128,7 +128,7 @@ def google_sign(text, tkk=None):
                 e.append(l >> 6 | 192)
             else:
                 # append calculated value if l matches special condition
-                if (l & 64512) == 55296 and g + 1 < size and a[g + 1] & 64512 == 56320:
+                if (l & 64512) == 55296 and g + 1 < size and a[g + 1] & 64512 == 56320:  # pragma: no cover
                     g += 1
                     l = (
                         65536 + ((l & 1023) << 10) + (a[g] & 1023)

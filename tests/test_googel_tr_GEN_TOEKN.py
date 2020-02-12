@@ -1,5 +1,7 @@
 ''' tests
 '''
+import pytest
+
 from google_sign import google_sign
 from google_tr_async.google_tr_async import GEN_TOKEN
 

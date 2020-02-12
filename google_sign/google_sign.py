@@ -40,6 +40,7 @@ import httpx
 from loguru import logger
 
 TKK = '436443.3778881810'
+GTK = ''
 
 
 def rshift(val, n):
@@ -69,7 +70,7 @@ def get_tkk(proxies=None):
             res = client.get('https://translate.google.cn/').text
             tkk = re.search(r"tkk:'(\d+\.\d+)", res).group(1)
         except Exception as exc:  # tested with monkeypatch re.search
-            logger.error('Unable to fetch tkk, fall back to None')
+            logger.error('%s, unable to fetch tkk, fall back to None' % exc)
             tkk = None
     return tkk
 
@@ -90,7 +91,7 @@ def google_sign(text, tkk=None):
         try:
             tkk = get_tkk()
         except Exception as exc:  # pragma: nocover
-            logger.error('Unable to fetch tkk, set to None')
+            logger.error('%s, unable to fetch tkk, set to None' % exc)
             tkk = None
     if tkk is None:  # pragma: nocover
         tkk = TKK

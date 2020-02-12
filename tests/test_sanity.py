@@ -38,11 +38,6 @@ def test_nonascii():
     assert google_sign('中文', TKK) == '473815.102924'
 
 
-def test_nonascii():
-    ''' test_nonascii '''
-    assert google_sign('中文', TKK) == '473815.102924'
-
-
 def test_umlaut():
     ''' test_umlaut '''
     assert google_sign('äöü', TKK) == '570289.924522'

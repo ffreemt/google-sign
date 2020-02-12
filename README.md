@@ -15,10 +15,22 @@ python -c "from google_sign import google_sign; print(google_sign('test'))"
 ### Usage
 
 ```
-from google_sign import google_sign
+from google_sign import google_sign, js2py_sign, GTK
 
-sign = google_sing('test')  #
+sign = google_sign('test')  #
 print(sign)  # '476257.126138'
+
+# for baidu translate text upto 30
+sign = google_sign('test', GTK)  #
+print(sign)  # '431039.159886'
+
+# for baidu translate text longer than 30
+sign = google_sign('test ' * 10)
+print(sign)  # '403909.183028'
+
+sign = google_sign('test ' * 10, GTK)
+print(sign)  # ditto
+
 ```
 
 ### Acknowledgments

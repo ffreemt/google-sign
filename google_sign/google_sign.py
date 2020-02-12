@@ -68,7 +68,7 @@ def get_tkk(proxies=None):
             # res = requests.get('https://translate.google.cn/', proxies=proxy).text
             res = client.get('https://translate.google.cn/').text
             tkk = re.search(r"tkk:'(\d+\.\d+)", res).group(1)
-        except Exception as exc:  # pragma: nocover
+        except Exception as exc:  # tested with monkeypatch re.search
             logger.error('Unable to fetch tkk, fall back to None')
             tkk = None
     return tkk
